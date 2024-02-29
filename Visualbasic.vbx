@@ -1,0 +1,89 @@
+Module CaesarEncryptDecrypt
+
+    Dim inputString As String = "Eoh no Mini Me has zapped me"
+    Dim encryptedString As String = ""
+    Dim decryptedString As String = ""
+    Dim solvedString As String = ""
+    Dim numShift As Integer = 3
+
+    Sub Main()
+        EncryptString()
+        DecryptString()
+        SolveCaesarCipher()
+        Console.ReadLine() ' Keep the console open
+    End Sub
+
+    Private Sub EncryptString()
+        inputString = inputString.ToUpper()
+
+        If numShift >= 26 Then
+            numShift = numShift Mod 26
+        End If
+
+        For i As Integer = 0 To inputString.Length - 1
+            If inputString(i) <> " "c Then
+                Dim asciiVal As Integer = Asc(inputString(i))
+                Dim shiftedAsciiVal As Integer = asciiVal + numShift
+
+                If shiftedAsciiVal <= Asc("Z"c) Then
+                    encryptedString &= Chr(shiftedAsciiVal)
+                Else
+                    shiftedAsciiVal = ((shiftedAsciiVal - Asc("A"c)) Mod 26) + Asc("A"c)
+                    encryptedString &= Chr(shiftedAsciiVal)
+                End If
+            Else
+                encryptedString &= " "
+            End If
+        Next
+
+        Console.WriteLine("Encrypted String: " & encryptedString)
+    End Sub
+
+    Private Sub DecryptString()
+    inputString = encryptedString
+    numShift = 3 
+
+    For i As Integer = 0 To inputString.Length - 1
+        If inputString(i) <> " "c Then
+            Dim asciiVal As Integer = Asc(inputString(i))
+            Dim shiftedAsciiVal As Integer = asciiVal - numShift
+
+            If shiftedAsciiVal < Asc("A"c) Then
+                shiftedAsciiVal += 26
+            End If
+
+            decryptedString &= Chr(shiftedAsciiVal)
+        Else
+            decryptedString &= " "
+        End If
+    Next
+
+    Console.WriteLine("Decrypted String: " & decryptedString)
+End Sub
+
+    Private Sub SolveCaesarCipher()
+        inputString = encryptedString
+
+        For j As Integer = 1 To 25
+            solvedString = ""
+
+            For i As Integer = 0 To inputString.Length - 1
+                If inputString(i) <> " "c Then
+                    Dim asciiVal As Integer = Asc(inputString(i))
+                    Dim shiftedAsciiVal As Integer = asciiVal - j
+
+                    If shiftedAsciiVal < Asc("A"c) Then
+                        shiftedAsciiVal += 26
+                    End If
+
+                    solvedString &= Chr(shiftedAsciiVal)
+                Else
+                    solvedString &= " "
+                End If
+            Next
+
+            Console.WriteLine("Shift " & j & " : " & solvedString)
+        Next
+    End Sub
+
+End Module
